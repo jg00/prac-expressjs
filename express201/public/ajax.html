@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ol>
+      <li>
+        Ran localhost:3000/ajax.html
+      </li>
+      <li>
+        The script below will run on page load.
+      </li>
+    </ol>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script>
+    const ourRequest = $.ajax({
+      method: "POST",
+      url: "http://localhost:3000/ajax",
+      dataType: "json", // note that for ajax, eventhough we specify dataType: 'json', the data is still sent as mime type of 'application/x-www-form-urlencoded' unless you specifically set the header.
+      data: {
+        // data: { name: 'sam'} -> req.body
+        name: "sam"
+      }
+    });
+
+    ourRequest.then(response => {
+      console.log(response);
+    });
+  </script>
+</html>
