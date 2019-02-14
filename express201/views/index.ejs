@@ -1,1 +1,19 @@
-<h1>Rendered file! ejs</h1>
+<% include head %>
+
+<% include navbar %>
+
+<h1>Home page!</h1>
+
+<p>
+  <h1><%= msg %></h1>
+  <h2><%= msg2 %></h2>
+  <h2><%= locals.msg %></h2>
+  <h2><%= locals.msg2 %></h2>
+  <h3><%= locals.validated %></h3>
+  <h3><%= validated %></h3>
+</p>
+
+<%# Below tag will let us print escaped data %>
+<p>
+  <%- html %>
+</p>

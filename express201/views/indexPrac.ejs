@@ -1,0 +1,17 @@
+<h1>Rendered file! ejs. Sample for loop only!</h1>
+
+<!-- This runs on express.  The code does not get sent back. -->
+<% for(let i=0; i<10; i++ ){ %> <% if (i % 2 === 0) { txt = 'even' %> <% } else
+{ txt = 'odd' } %>
+<li><%= i %> - <%= txt %></li>
+<% } %>
+
+<br />
+
+<!-- This gets sent back and it is not ejs.  This is just regular DOM
+     javascript and the browser can read that.  -->
+<script>
+  for (let i = 0; i < 10; i++) {
+    document.write("<li>Test</li>");
+  }
+</script>
