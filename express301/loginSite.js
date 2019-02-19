@@ -13,17 +13,19 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.get("/", (req, res, next) => {
-  res.send("Check");
-});
-
+// req.query and below runs for every HTTP request.
 app.use((req, res, next) => {
   if (req.query.msg === "fail") {
     res.locals.msg = `Username/password does not exists.`;
   } else {
     res.locals.msg = ``;
   }
+
   next();
+});
+
+app.get("/", (req, res, next) => {
+  res.send("Check");
 });
 
 app.get("/login", (req, res, next) => {
@@ -46,7 +48,7 @@ app.post("/process_login", (req, res, next) => {
     res.cookie("username", username);
     res.redirect("/welcome");
   } else {
-    res.redirect("/login?msg=fail&test=helo");
+    res.redirect("/login?msg=fail&test=hello");
   }
 
   // res.json(req.body);
@@ -56,6 +58,40 @@ app.get("/welcome", (req, res, next) => {
   res.render("welcome", {
     username: req.cookies.username
   });
+});
+
+// app.param('param to look for', callback); Usually placed at top before any routes.
+// Before any route(s) below app.param() will look for any route with the specified param name
+// :storyId, :blogId would be replaced with 'id'
+app.param("id", (req, res, next, id) => {
+  console.log("Params called:", id);
+  // some logic if id for story..
+  // some logic if id for blog..
+  next();
+});
+
+/* Commented as example of routes with the same pattern and wildcard name 'id' for use with app.param() above
+app.get("/story/:id", (req, res, next) => {
+  res.send(`<h1>Story ${req.params.id}</h1>`);
+});
+
+app.get("/blog/:id", (req, res, next) => {
+  res.send(`<h1>Blog ${req.params.id}</h1>`);
+});
+*/
+
+// : wildcard, req.params
+app.get("/story/:storyId", (req, res, next) => {
+  res.send(`<h1>Story ${req.params.storyId}</h1>`);
+});
+
+// /story/:blogId will never run (without next()) as it matches above
+app.get("/story/:blogId", (req, res, next) => {
+  res.send(`<h1>Blog ${req.params.blogId}</h1>`);
+});
+
+app.get("/story/:storyId/:link", (req, res, next) => {
+  res.send(`<h1>Story ${req.params.storyId} - ${req.params.link}</h1>`);
 });
 
 app.get("/logout", (req, res, nex) => {
