@@ -94,6 +94,57 @@ app.get("/story/:storyId/:link", (req, res, next) => {
   res.send(`<h1>Story ${req.params.storyId} - ${req.params.link}</h1>`);
 });
 
+// res.sendFile() vs res.download()
+app.get("/statement", (req, res, next) => {
+  // res.send("<h1>Check</h1>");
+
+  /*
+    // Option 1: .sendFile().  However this causes the browser to load the image (ie this will render the statement in the browser unless this is what we want).
+    res.sendFile(
+      path.join(__dirname, "userStatements/BankStatementChequing.png")
+    );
+  */
+
+  // Option 2: res.download(1:filename, 2:optional name you want filename to download as, 3:callback)
+  // Note - res.download() automatically sets the headers but you can set it manually shown below (see Option 4).
+  // See Content-Disposition -> attachment; filename="my-bank-statement.png"
+  res.download(
+    path.join(__dirname, "userStatements/BankStatementChequing.png"),
+    "my-bank-statement.png",
+
+    // Note you can call a callback once transfer is complete.
+    // Note if there is an error in sending the file, headers may already be sent (ie
+    // you have already done your res).  Here you will not be able to do an if error check.
+    error => {
+      // possible workaround if headers not already sent > use res.headerSent
+      if (error) {
+        // res.headerSent is a Boolean, true if headers are already sent.
+        if (!res.headersSent) {
+          res.redirect("/download/error");
+        }
+      }
+      // console.log(error);
+    }
+  );
+
+  /*
+  // Option 3: res.attachment() does same thing but ONLY sets the headers for content-disposition to attachment and file name if provided
+    res.attachment(
+      path.join(__dirname, "userStatements/BankStatementChequing.png"),
+      "my-bank-statement.png"
+    );
+  */
+
+  /*
+    // Option 4: Manually set the header
+    res.set("Content-Disposition", "attachment");
+    res.sendFile(
+      path.join(__dirname, "userStatements/BankStatementChequing.png"),
+      "my-bank-statement.png"
+    );
+  */
+});
+
 app.get("/logout", (req, res, nex) => {
   // .clearCookie('name of cookie')
   res.clearCookie("username");
