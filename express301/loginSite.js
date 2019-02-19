@@ -14,11 +14,20 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res, next) => {
-  console.log(req.cookies);
   res.send("Check");
 });
 
+app.use((req, res, next) => {
+  if (req.query.msg === "fail") {
+    res.locals.msg = `Username/password does not exists.`;
+  } else {
+    res.locals.msg = ``;
+  }
+  next();
+});
+
 app.get("/login", (req, res, next) => {
+  // console.log(req.query);
   res.render("login");
 });
 
@@ -37,7 +46,7 @@ app.post("/process_login", (req, res, next) => {
     res.cookie("username", username);
     res.redirect("/welcome");
   } else {
-    res.redirect("/login?msg=fail");
+    res.redirect("/login?msg=fail&test=helo");
   }
 
   // res.json(req.body);
