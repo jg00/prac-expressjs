@@ -100,14 +100,18 @@ app.get("/statement", (req, res, next) => {
 
   /*
     // Option 1: .sendFile().  However this causes the browser to load the image (ie this will render the statement in the browser unless this is what we want).
+    // Note that in the response header 'content-type -> image/png'
     res.sendFile(
       path.join(__dirname, "userStatements/BankStatementChequing.png")
     );
   */
 
   // Option 2: res.download(1:filename, 2:optional name you want filename to download as, 3:callback)
-  // Note - res.download() automatically sets the headers but you can set it manually shown below (see Option 4).
-  // See Content-Disposition -> attachment; filename="my-bank-statement.png"
+  // Note - By using res.download(), Express is automatically setting the headers but you can set it manually shown below (see Option 4).
+  // Note that in the response header we still have 'content-type -> image/png' but different
+  // Content-Disposition -> attachment; filename="my-bank-statement.png"
+  // The browser sees the Content-Disposition as an attachment and handles accordingly.
+  // All we can do is set the headers and the different types of browser will now what to do based on the headers set following protocol.
   res.download(
     path.join(__dirname, "userStatements/BankStatementChequing.png"),
     "my-bank-statement.png",
@@ -123,7 +127,6 @@ app.get("/statement", (req, res, next) => {
           res.redirect("/download/error");
         }
       }
-      // console.log(error);
     }
   );
 
