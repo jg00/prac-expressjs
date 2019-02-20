@@ -46,7 +46,7 @@ app.post("/process_login", (req, res, next) => {
   if (password === "s") {
     // .cookie('name of cookie', 'value')
     res.cookie("username", username);
-    res.redirect("/welcome");
+    res.redirect("/welcome"); //default 302 Found
   } else {
     res.redirect("/login?msg=fail&test=hello");
   }

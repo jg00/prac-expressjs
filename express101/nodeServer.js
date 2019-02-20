@@ -27,11 +27,13 @@ const server = http.createServer((req, res) => {
   if (req.url === "/") {
     res.writeHead(200, { "content-type": "text/html" });
     const homePageHTML = fs.readFileSync("node.html");
+    // console.log(homePageHTML); // <Buffer 89...
     res.write(homePageHTML);
     res.end();
   } else if (req.url === "/node.png") {
     res.writeHead(200, { "content-type": "image/png" });
     const image = fs.readFileSync("node.png");
+    // console.log(image); // <Buffer 3c...
     res.write(image);
     res.end();
   } else if (req.url === "/styles.css") {
