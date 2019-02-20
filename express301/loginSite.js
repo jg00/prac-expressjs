@@ -112,19 +112,20 @@ app.get("/statement", (req, res, next) => {
   // Content-Disposition -> attachment; filename="my-bank-statement.png"
   // The browser sees the Content-Disposition as an attachment and handles accordingly.
   // All we can do is set the headers and the different types of browser will now what to do based on the headers set following protocol.
+  // This method uses res.sendFile() to transfer the file.
   res.download(
     path.join(__dirname, "userStatements/BankStatementChequing.png"),
-    "my-bank-statement.png",
+    "mybankstatement.png",
 
     // Note you can call a callback once transfer is complete.
     // Note if there is an error in sending the file, headers may already be sent (ie
-    // you have already done your res).  Here you will not be able to do an if error check.
+    // you only get one res with headers already sent).
     error => {
       // possible workaround if headers not already sent > use res.headerSent
       if (error) {
-        // res.headerSent is a Boolean, true if headers are already sent.
+        // res.headerSent is a Boolean.  true if headers are already sent. (ie don't send them).
         if (!res.headersSent) {
-          res.redirect("/download/error");
+          res.redirect("/download/error"); // Here we only try to redirect only if headers have not already been sent,
         }
       }
     }
@@ -132,11 +133,18 @@ app.get("/statement", (req, res, next) => {
 
   /*
   // Option 3: res.attachment() does same thing but ONLY sets the headers for content-disposition to attachment and file name if provided
-    res.attachment(
-      path.join(__dirname, "userStatements/BankStatementChequing.png"),
-      "my-bank-statement.png"
-    );
-  */
+  res.attachment(
+    path.join(__dirname, "/userStatements/BankStatementChequing.png")
+    // "my-bank-statement.png"
+  );
+
+  res.set("Content-Type", "image/png");
+
+  res.send();
+
+    // Resource interpreted as Document but transferred with MIME type image/png: "http://localhost:3000/statement".
+  
+    */
 
   /*
     // Option 4: Manually set the header

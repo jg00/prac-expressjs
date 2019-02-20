@@ -1,8 +1,8 @@
 const express = require("express");
 let router = express.Router(); // creates a new router object
 
-// works like app.use but router.use is specific to this router
-// router.use()
+// Router works same way app router does, it's just this is specific to this router.
+// app.get() works same as router.get()
 
 router.get("/", (req, res, next) => {
   res.json({
