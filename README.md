@@ -8,6 +8,8 @@ express201 - Middleware, rendering
 
 express301 - Routes, req, res, Router, headers, etc.
 
+movieFanSite - Working with movie API, request module
+
 ## Technologies
 
 :coffee: **_Express.js_**
