@@ -64,4 +64,25 @@ router.get("/movie/:id", (req, res, next) => {
   });
 });
 
+router.post("/search", (req, res, next) => {
+  // res.send("check");
+
+  // req.body because we are using a POST method and send data from a form
+  const userSearchTerm = encodeURI(req.body.movieSearch);
+  const cat = req.body.cat; // value of 'person' or 'movie'
+  const movieUrl = `${apiBaseUrl}/search/${cat}?query=${userSearchTerm}&api_key=${apiKey}`;
+  // res.send(movieUrl); // check
+
+  request.get(movieUrl, (error, response, movieData) => {
+    let parsedData = JSON.parse(movieData);
+    // res.json(parsedData); // check
+
+    if (cat === "person") {
+      parsedData.results = parsedData.results[0].known_for; // set to array of movies actor is known for
+    }
+
+    res.render("index", { parsedData: parsedData.results });
+  });
+});
+
 module.exports = router;
