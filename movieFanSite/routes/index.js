@@ -3,11 +3,37 @@ const request = require("request");
 
 var router = express.Router();
 
-const keys = require("../keys");
-const apiKey = keys.apiKey;
-const apiBaseUrl = "http://api.themoviedb.org/3";
-const nowPlayingUrl = `${apiBaseUrl}/movie/now_playing?api_key=${apiKey}`;
-const imageBaseUrl = "http://image.tmdb.org/t/p/w300";
+/*
+  Config:
+    Set usingIMDBApi = true to use Movie IMDB API
+    Set usingIMDBApi = false to use http://localhost:3030 Custom API
+*/
+const usingIMDBApi = false;
+
+let apiKey = "";
+let apiBaseUrl = "";
+let nowPlayingUrl = "";
+let imageBaseUrl = "";
+
+if (usingIMDBApi) {
+  const keys = require("../keys");
+  apiKey = keys.apiKey;
+  // const apiKey = "123456789";
+  apiBaseUrl = "http://api.themoviedb.org/3";
+  // const apiBaseUrl = "http://localhost:3030";
+  nowPlayingUrl = `${apiBaseUrl}/movie/now_playing?api_key=${apiKey}`;
+  // const nowPlayingUrl = `${apiBaseUrl}/most_popular?api_key=${apiKey}`;
+  imageBaseUrl = "http://image.tmdb.org/t/p/w300";
+} else {
+  // const keys = require("../keys");
+  // const apiKey = keys.apiKey;
+  apiKey = "123456789";
+  // const apiBaseUrl = "http://api.themoviedb.org/3";
+  apiBaseUrl = "http://localhost:3030";
+  // const nowPlayingUrl = `${apiBaseUrl}/movie/now_playing?api_key=${apiKey}`;
+  nowPlayingUrl = `${apiBaseUrl}/most_popular?api_key=${apiKey}`;
+  imageBaseUrl = "http://image.tmdb.org/t/p/w300";
+}
 
 router.use((req, res, next) => {
   res.locals.imageBaseUrl = imageBaseUrl;
@@ -60,6 +86,7 @@ router.get("/movie/:id", (req, res, next) => {
   // http://api.themoviedb.org/3/movie/{movie_id} > to GET movie details
   request.get(thisMovieURL, (error, response, movieData) => {
     const parsedData = JSON.parse(movieData); // movieData returned is an object
+    console.log(parsedData);
     res.render("single-movie", { parsedData });
   });
 });

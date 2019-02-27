@@ -8,7 +8,7 @@ express201 - Middleware, rendering
 
 express301 - Routes, req, res, Router, headers, etc.
 
-movieFanSite - Movie API, request module, Server-side rendering.
+movieFanSite - Movie API, request module, Server-side rendering. In summary we go out to the The Movie Database API tha we consume, pull down the JSON and we render pages, etc.
 
 ## Technologies
 
