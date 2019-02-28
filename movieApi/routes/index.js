@@ -19,7 +19,8 @@ router.get("/most_popular", (req, res, next) => {
   let page = req.query.page;
   if (page === undefined) page = 1; // If undefined give default value of page=0
 
-  let elementsPerPage = 20; // Set page to contain 20 elements.
+  // let elementsPerPage = 20; // Set page to contain 20 elements.
+  let elementsPerPage = res.locals.elementsPerPage; // Set page to contain 20 elements.
 
   // Handled as middleware in app.js
   // if (req.query.api_key !== "123456789") {

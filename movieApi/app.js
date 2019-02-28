@@ -19,7 +19,15 @@ app.use((req, res, next) => {
   if (req.query.api_key !== "123456789") {
     res.status(401); // Unauthorized = 401, NOT a 200
     res.json("Invalid API Key"); // With res.json we get a 200 status.
+    return;
   }
+
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.query.elementsPerPage) res.locals.elementsPerPage = 20;
+  else res.locals.elementsPerPage = req.query.elementsPerPage;
 
   next();
 });
