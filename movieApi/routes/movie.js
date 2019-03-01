@@ -2,6 +2,15 @@ const express = require("express");
 const movieDetails = require("../data/movieDetails");
 const router = express.Router();
 
+function requireJSON(req, res, next) {
+  if (!req.is("application/json")) {
+    res.json({ msg: "Content type must be application/json." });
+  } else {
+    // res.json("test");
+    next();
+  }
+}
+
 // Possible to run a callack if a specified wildcard is used
 // We can hand it any string and if it matches any wildcard in the route then
 // this callback will kickoff.
@@ -18,7 +27,7 @@ router.get("/", (req, res, next) => {
 });
 
 // GET /movie/top_rated
-// ex: http://localhost:3030/movie/top_rated?api_key=123456789&page=3
+// ex: http://localhost:3030/movie/top_rated?api_key=123456789&page=1&elementsPerPage=3
 router.get("/top_rated", (req, res, next) => {
   let elementsPerPage = res.locals.elementsPerPage; // Set page to contain 20 elements.
   let page = req.query.page;
@@ -57,19 +66,62 @@ router.get("/:movieId", (req, res, next) => {
 });
 
 // POST /movie/:movieId/rating
-// In progress...
-/*
-    Need movieId to rate
-    Provide value (number) between 0.5 and 10.0
-    POST route send data as object
-    {
-      "value": 8.5
-    }
-    We can then use req.params.movieID and get the value using req.body.value
-*/
+// http://localhost:3030/movie/2222/rating?api_key=123456789
+// Params       > movie_id (required;integer)
+// Header       > Content-Type application/json (required; string) - Will be handled through middleware function
+// Query String > api_key (required; string)
+// Response     > { value: 0.5} (required; value between 0.5 - 10)
 
-router.post("/:movieId/rating", (req, res, next) => {});
+// Note you could have also used app.use(requireJSON) instead of calling it as another callback middleware function
+router.post("/:movieId/rating", requireJSON, (req, res, next) => {
+  const movieId = req.params.movieId;
+
+  // console.log(req.get("content-type")); // check
+
+  /* Placed into middleware function - requireJSON
+  // req.is() short way to check 'Content-Type'
+  if (!req.is("application/json")) {
+    res.json({ msg: "Content type must be application/json. Method - POST" });
+  } else {
+    res.json("test");
+  }
+  */
+
+  const userRating = req.body.value;
+  if (userRating < 0.5 || userRating > 10) {
+    res.json({ msg: "Rating must be between .5 and 10" });
+  } else {
+    res.json({ msg: "Thank you for submitting your rating", status_code: 200 });
+  }
+});
 
 // DELETE /movie/:movieId/rating
+// Params       > movie_id (required;integer)
+// Header       > Content-Type application/json (required; string) - Will be handled through middleware function
+// Query String > api_key (required; string)
+// Response     > {}
+router.delete("/:movieId/rating", requireJSON, (req, res, next) => {
+  /* Placed into middleware function - requireJSON
+  // req.is() short way to check 'Content-Type'
+  if (!req.is("application/json")) {
+    res.json({ msg: "Content type must be application/json. Method DELETE" });
+  } else {
+    res.json("test");
+  }
+  */
+
+  /*
+  RE - Representational part - Method ie GET, POST, DELETE
+  ST - Stateless
+
+  */
+
+  const movieID = req.params.movieID; // If needed
+
+  res.json({
+    msg: "Rating delete!",
+    status_code: 200
+  });
+});
 
 module.exports = router;
