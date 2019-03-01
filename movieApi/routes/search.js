@@ -23,6 +23,7 @@ router.get("/", (req, res, next) => {
 });
 
 // GET /search/movie
+// //localhost:3030/search/movie?api_key=123456789&query=Spider
 router.get("/movie", (req, res, next) => {
   const searchTerm = req.query.query;
   const results = movies.filter(movie => {
@@ -34,6 +35,7 @@ router.get("/movie", (req, res, next) => {
 });
 
 // GET /search/person
+// //localhost:3030/search/person?api_key=123456789&query=Keaton
 router.get("/person", (req, res, next) => {
   const searchTerm = req.query.query;
   const results = people.filter(person => {
