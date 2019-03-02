@@ -12,6 +12,8 @@ movieFanSite - Movie API, request module, Server-side rendering. In summary we g
 
 movieAPI - Custom API (We can switch to this instead of Movie API).
 
+moviePassport - Handling authentication using Passport.
+
 ## Technologies
 
 :coffee: **_Express.js_**
