@@ -17,6 +17,10 @@ app.all("/", (req, res) => {
   // 2 Send .html file
   console.log(path.join(__dirname, "node.html")); // /Users/userfolder/subfolder/subfolder/express101/node.html
   res.sendFile(path.join(__dirname, "node.html")); // To send file use .sendFile that requires absolute path where file is on machine and not relative to the server
+
+  // res.redirect(
+  //   "./node2.html"
+  // ); /* Another way may be to serve up starting page that is placed in the static public folder. */
 });
 
 // .all (any method type)
