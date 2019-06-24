@@ -6,6 +6,7 @@ const app = express();
 const helmet = require("helmet");
 app.use(helmet());
 
+// By default browser at '/' looks for index.html first.  Since app.use() comes first and finds and index.html, it is loaded first.
 app.use(express.static("public")); // remember if there was index.html here it will show first before res.render('index') in the views folder.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
