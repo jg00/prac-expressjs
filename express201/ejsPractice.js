@@ -23,6 +23,7 @@ function validateUser(req, res, next) {
 app.use(validateUser);
 
 app.get("/about", (req, res, next) => {
+  console.log(res.locals);
   res.render("about", {});
 });
 
