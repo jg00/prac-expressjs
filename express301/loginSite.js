@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res, next) => {
+  console.log("/", req.cookies);
   res.send("Check");
 });
 
@@ -55,6 +56,9 @@ app.post("/process_login", (req, res, next) => {
 });
 
 app.get("/welcome", (req, res, next) => {
+  // console.log("/welcome", req.body); // this is a new request and we no longer have access to req.body because this was a redirect and not from a form POST request.
+  // console.log("/welcome", req.cookies);
+  // console.log("/welcome", res.locals);
   res.render("welcome", {
     username: req.cookies.username
   });
