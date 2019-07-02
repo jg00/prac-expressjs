@@ -19,4 +19,10 @@ router.get("/signup", (req, res, next) => {
   res.send("<h2>User Router - Signup</h2>");
 });
 
+// /user/
+router.get("/", (req, res, next) => {
+  console.log(res.locals.validated);
+  res.send(`<h2>User Router - Main</h2>${res.locals.validated}`);
+});
+
 module.exports = router;
