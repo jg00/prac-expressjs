@@ -46,8 +46,11 @@ app.post("/process_login", (req, res, next) => {
 
   if (password === "s") {
     // .cookie('name of cookie', 'value')
-    res.cookie("username", username);
-    res.redirect("/welcome"); //default 302 Found
+    res.cookie("username", username); // since send sends the response body, and cookie headers are...well...in the header
+    res.cookie("username2", username);
+
+    res.redirect("/welcome"); //default 302 Found.  This will be a GET request from the browser but now you will have access to the cookie from the user's browser
+    // res.send("cookie set"); // works and cookie is set but usually you redirect
   } else {
     res.redirect("/login?msg=fail&test=hello");
   }
@@ -163,6 +166,8 @@ app.get("/statement", (req, res, next) => {
 app.get("/logout", (req, res, nex) => {
   // .clearCookie('name of cookie')
   res.clearCookie("username");
+  res.clearCookie("username2");
+
   res.redirect("/login");
 });
 
